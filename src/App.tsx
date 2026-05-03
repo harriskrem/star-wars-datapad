@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AppRoutes from '@/routes'
 import RootErrorBoundary from '@/components/error'
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { createQueryClient } from '@/lib/queryClient'
 
 export default function App() {
@@ -12,13 +13,15 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <RootErrorBoundary>
-          <AppRoutes />
-        </RootErrorBoundary>
-      </BrowserRouter>
-      <Toaster position="bottom-right" />
-      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      <TooltipProvider>
+        <BrowserRouter>
+          <RootErrorBoundary>
+            <AppRoutes />
+          </RootErrorBoundary>
+        </BrowserRouter>
+        <Toaster position="bottom-right" />
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      </TooltipProvider>
     </QueryClientProvider>
   )
 }

@@ -6,7 +6,7 @@ import CharactersListPage from '@/pages/CharactersListPage'
 import CharacterDetailPage from '@/pages/CharacterDetailPage'
 import FilmsListPage from '@/pages/FilmsListPage'
 import FilmDetailPage from '@/pages/FilmDetailPage'
-import Placeholder from '@/components/common/Placeholder'
+import FavouritesPage from '@/pages/FavouritesPage'
 import { paths } from '@/routes/paths'
 
 export default function AppRoutes() {
@@ -18,7 +18,7 @@ export default function AppRoutes() {
         <Route path="/characters/:id" element={<CharacterDetailPage />} />
         <Route path={paths.films} element={<FilmsListPage />} />
         <Route path="/films/:id" element={<FilmDetailPage />} />
-        <Route path={paths.favourites} element={<Placeholder title="Favourites" />} />
+        <Route path={paths.favourites} element={<FavouritesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

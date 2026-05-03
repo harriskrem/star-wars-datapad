@@ -58,9 +58,7 @@ describe('FilmsListPage', () => {
 
     expect(screen.queryByTestId('favourites-count-badge')).not.toBeInTheDocument()
 
-    await user.click(
-      screen.getByRole('button', { name: 'Add A New Hope to favourites' }),
-    )
+    await user.click(screen.getByRole('button', { name: 'Add A New Hope to favourites' }))
 
     await waitFor(() => {
       expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
@@ -88,9 +86,7 @@ describe('FilmsListPage', () => {
     await screen.findByText('A New Hope')
     expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
 
-    await user.click(
-      screen.getByRole('button', { name: 'Add A New Hope to favourites' }),
-    )
+    await user.click(screen.getByRole('button', { name: 'Add A New Hope to favourites' }))
 
     await waitFor(() => {
       expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('2')

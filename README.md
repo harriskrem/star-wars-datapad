@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
+# Star Wars Datapad
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small handheld for the Star Wars galaxy: browse characters and films, mark favourites, and revisit them later. Built as the deliverable for a frontend technical assessment.
 
-Currently, two official plugins are available:
+> **Live URL:** _to be added once deployed to Vercel_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Quick start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+yarn install
+yarn dev          # start the dev server (http://localhost:5173)
+yarn test         # run the test suite
+yarn typecheck    # tsc -b
+yarn lint         # eslint
+yarn format       # prettier --write .
+yarn build        # production build into dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Requires **Node 22** (see [`.nvmrc`](./.nvmrc)) and **Yarn 4** via Corepack (`corepack enable`). The `packageManager` field in `package.json` pins Yarn 4.13.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Stack
+
+- **React 19** + **TypeScript** (strict)
+- **Vite 8** as the build tool
+- **Tailwind CSS v4** + **shadcn/ui** (with Base UI under the hood) + **Lucide** icons
+- **React Router v7** for routing
+- **TanStack Query** + **Zustand** for state (introduced in later tickets)
+- **react-error-boundary** for unhandled-render recovery
+- **Vitest** + **React Testing Library** + **vitest-axe** + **MSW** for tests
+- **ESLint** (with `jsx-a11y`) + **Prettier** for code quality
+- **GitHub Actions** for CI; **Vercel** for hosting
+
+---
+
+## Scope
+
+In scope for the finished product:
+
+- Browse characters and films as paginated, searchable lists.
+- Read full detail for any character or film, including links to related items.
+- Mark any character or film as a favourite, from any card or detail page.
+- Persist favourites in the browser; sync across open tabs; survive page reload.
+- See a dedicated favourites destination grouped by type and sorted newest-first.
+- Loading skeletons, empty states, inline error states with retry, toast on actions, and a custom 404.
+- Responsive from a 360 px viewport up; dark theme.
+
+Deliberately out of scope: planets/species/vehicles/starships as their own browsable pages, light theme, authentication, internationalisation, and offline beyond cached snapshots. (Full list of design decisions lives in the planning docs alongside this repository.)
+
+---
+
+## Architecture
+
+The app is a pure client-side single-page application served as a static bundle. It fetches Star Wars data from [`swapi.info`](https://swapi.info), which serves the same data as the better-known `swapi.dev` but with a valid TLS certificate. Because `swapi.info` returns flat arrays without pagination or search parameters, both pagination and search are implemented client-side over a fetched-once-and-cached list. Favourites are persisted in `localStorage` via Zustand, with cross-tab sync and graceful in-memory fallback when storage is blocked.
+
+Module structure (so far):
+
+- `src/routes/` — route table and URL constants.
+- `src/layout/` — top-level layout, header, primary navigation.
+- `src/pages/` — the page components mounted by the router.
+- `src/components/` — `ui/` for shadcn primitives, `error/` for the global ErrorBoundary.
+- `src/lib/` — small utilities (`cn`, etc.).
+- `src/test/` — test setup and the `renderWithApp` helper that absorbs provider plumbing.
+
+---
+
+## Testing
+
+```sh
+yarn test          # run once
+yarn test:watch    # watch mode
 ```
+
+The suite combines unit tests on hooks/utilities, component tests on UI primitives, and integration tests over MSW-mocked API responses. Accessibility violations on rendered components are caught by `vitest-axe`. End-to-end tests (Playwright) are deliberately out of scope.
+
+---
+
+## Accessibility
+
+- shadcn/ui primitives wrap **Base UI** for keyboard navigation, focus management, and ARIA defaults.
+- `eslint-plugin-jsx-a11y` enforces best practices in lint.
+- `vitest-axe` runs axe-core against every rendered component in the test suite.
+- Animations are gated behind Tailwind's `motion-safe:` variant so they respect `prefers-reduced-motion`.

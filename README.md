@@ -2,7 +2,7 @@
 
 A small handheld for the Star Wars galaxy: browse characters and films, mark favourites you want to revisit, and access them later.
 
-> **Live URL:** _to be added once deployed to Vercel_
+> **Live URL:** [star-wars-datapad.vercel.app](https://star-wars-datapad.vercel.app/)
 
 ---
 
@@ -33,7 +33,6 @@ Requires **Node 20+** and **Yarn 4+**.
 - **Sonner** for toasts
 - **Vitest** + **React Testing Library** + **vitest-axe** + **MSW** for tests
 - **ESLint** (with `jsx-a11y`) + **Prettier**
-- **GitHub Actions** for CI; **Vercel** for hosting
 
 ---
 

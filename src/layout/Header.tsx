@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Nav from '@/layout/Nav'
+import MobileNav from '@/layout/MobileNav'
 import { paths } from '@/routes/paths'
 
 export default function Header() {
@@ -15,7 +16,12 @@ export default function Header() {
             Datapad
           </span>
         </Link>
-        <Nav />
+        <div className="hidden md:block">
+          <Nav />
+        </div>
+        <div className="md:hidden">
+          <MobileNav />
+        </div>
       </div>
     </header>
   )

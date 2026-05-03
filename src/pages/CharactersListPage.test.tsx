@@ -46,6 +46,60 @@ describe('CharactersListPage', () => {
     expect(screen.getByRole('button', { name: 'Page 1' })).not.toHaveAttribute('aria-current')
   })
 
+  it('filters the list by typed query after debounce', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters')
+
+    await screen.findByText('Luke Skywalker')
+
+    const input = screen.getByLabelText(/search characters/i)
+    await user.type(input, 'skywalker')
+
+    // After debounce, only Skywalkers remain visible (Luke, Anakin, Shmi)
+    expect(await screen.findByText('Anakin Skywalker')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText('C-3PO')).not.toBeInTheDocument()
+    })
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument()
+    expect(screen.getByText('Shmi Skywalker')).toBeInTheDocument()
+  })
+
+  it('shows the empty state when no characters match the query', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters')
+
+    await screen.findByText('Luke Skywalker')
+
+    const input = screen.getByLabelText(/search characters/i)
+    await user.type(input, 'asdfqwerty')
+
+    expect(await screen.findByText(/nothing matched/i)).toBeInTheDocument()
+    expect(screen.getByText(/try a different name/i)).toBeInTheDocument()
+  })
+
+  it('restores the search from the URL with the input populated', async () => {
+    renderAppAt('/characters?search=anakin')
+
+    expect(await screen.findByText('Anakin Skywalker')).toBeInTheDocument()
+    expect(screen.queryByText('Luke Skywalker')).not.toBeInTheDocument()
+
+    const input = screen.getByLabelText<HTMLInputElement>(/search characters/i)
+    expect(input.value).toBe('anakin')
+  })
+
+  it('clears the search via the clear button and restores the full list', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters?search=anakin')
+
+    await screen.findByText('Anakin Skywalker')
+    expect(screen.queryByText('Luke Skywalker')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /clear search/i }))
+
+    expect(await screen.findByText('Luke Skywalker')).toBeInTheDocument()
+    expect(screen.getByText('C-3PO')).toBeInTheDocument()
+  })
+
   it('shows the inline error state and recovers on retry', async () => {
     server.use(
       http.get('https://swapi.info/api/people', () => HttpResponse.json([], { status: 500 })),

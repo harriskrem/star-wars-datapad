@@ -17,6 +17,23 @@ export type Character = {
   edited: string
 }
 
+export type Film = {
+  url: string
+  title: string
+  episode_id: number
+  opening_crawl: string
+  director: string
+  producer: string
+  release_date: string
+  characters: string[]
+  planets: string[]
+  starships: string[]
+  vehicles: string[]
+  species: string[]
+  created: string
+  edited: string
+}
+
 export class ApiError extends Error {
   status: number
   url: string

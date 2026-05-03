@@ -13,7 +13,7 @@ export default function Header() {
           <span className="text-base font-semibold tracking-tight sm:text-lg">
             Star Wars
           </span>
-          <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+          <span className="text-muted-foreground hidden font-mono text-xs tracking-widest uppercase sm:inline">
             Datapad
           </span>
         </Link>

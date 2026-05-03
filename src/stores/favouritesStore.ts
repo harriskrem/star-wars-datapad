@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { persistentStorage } from '@/lib/persistentStorage'
 
 export type FavouriteType = 'character' | 'film'
 
@@ -32,6 +33,8 @@ type FavouritesActions = {
 
 type FavouritesStore = FavouritesState & FavouritesActions
 
+const STORAGE_KEY = 'datapad.favourites'
+
 export const useFavouritesStore = create<FavouritesStore>()(
   persist(
     (set, get) => ({
@@ -50,8 +53,9 @@ export const useFavouritesStore = create<FavouritesStore>()(
       },
     }),
     {
-      name: 'datapad.favourites',
+      name: STORAGE_KEY,
       version: 1,
+      storage: createJSONStorage(() => persistentStorage),
       partialize: (state) => ({
         schemaVersion: state.schemaVersion,
         items: state.items,
@@ -59,6 +63,14 @@ export const useFavouritesStore = create<FavouritesStore>()(
     },
   ),
 )
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY) {
+      void useFavouritesStore.persist.rehydrate()
+    }
+  })
+}
 
 export function selectIsFavourite(type: FavouriteType, id: string) {
   return (state: FavouritesStore) => state.items.some((i) => i.type === type && i.id === id)

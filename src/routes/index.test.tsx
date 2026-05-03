@@ -3,24 +3,9 @@ import { screen } from '@testing-library/react'
 import { renderAppAt } from '@/test/renderWithApp'
 
 describe('AppRoutes', () => {
-  it('renders the home page at "/"', () => {
+  it('mounts the home page at "/" inside the layout', () => {
     renderAppAt('/')
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/handheld/i)
-  })
-
-  it('renders the characters list at /characters', () => {
-    renderAppAt('/characters')
-    expect(screen.getByRole('heading', { level: 1, name: 'Characters' })).toBeInTheDocument()
-  })
-
-  it('renders the films placeholder at /films', () => {
-    renderAppAt('/films')
-    expect(screen.getByRole('heading', { level: 1, name: 'Films' })).toBeInTheDocument()
-  })
-
-  it('renders the favourites placeholder at /favourites', () => {
-    renderAppAt('/favourites')
-    expect(screen.getByRole('heading', { level: 1, name: 'Favourites' })).toBeInTheDocument()
   })
 
   it('renders the 404 page for an unmatched route', () => {

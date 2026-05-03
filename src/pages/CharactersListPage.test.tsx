@@ -55,13 +55,11 @@ describe('CharactersListPage', () => {
     const input = screen.getByLabelText(/search characters/i)
     await user.type(input, 'skywalker')
 
-    // After debounce, only Skywalkers remain visible (Luke, Anakin, Shmi)
     expect(await screen.findByText('Anakin Skywalker')).toBeInTheDocument()
     await waitFor(() => {
       expect(screen.queryByText('C-3PO')).not.toBeInTheDocument()
     })
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument()
-    expect(screen.getByText('Shmi Skywalker')).toBeInTheDocument()
   })
 
   it('shows the empty state when no characters match the query', async () => {

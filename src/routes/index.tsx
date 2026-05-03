@@ -5,7 +5,7 @@ import NotFoundPage from '@/pages/NotFoundPage'
 import CharactersListPage from '@/pages/CharactersListPage'
 import FilmsListPage from '@/pages/FilmsListPage'
 import FilmDetailPage from '@/pages/FilmDetailPage'
-import Placeholder from '@/pages/placeholders'
+import Placeholder from '@/components/common/Placeholder'
 import { paths } from '@/routes/paths'
 
 export default function AppRoutes() {

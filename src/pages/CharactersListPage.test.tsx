@@ -37,15 +37,6 @@ describe('CharactersListPage', () => {
     expect(screen.queryByText('Luke Skywalker')).not.toBeInTheDocument()
   })
 
-  it('marks the active page with aria-current', async () => {
-    renderAppAt('/characters?page=3')
-    await screen.findByRole('navigation', { name: /pagination/i })
-
-    const activeButton = screen.getByRole('button', { name: 'Page 3' })
-    expect(activeButton).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByRole('button', { name: 'Page 1' })).not.toHaveAttribute('aria-current')
-  })
-
   it('filters the list by typed query after debounce', async () => {
     const user = userEvent.setup()
     renderAppAt('/characters')

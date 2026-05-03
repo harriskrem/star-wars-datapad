@@ -31,18 +31,6 @@ describe('CharacterDetailPage', () => {
     expect(empireLink).toHaveAttribute('href', '/films/2')
   })
 
-  it('navigates to the film detail page when a film link is clicked', async () => {
-    const user = userEvent.setup()
-    renderAppAt('/characters/1')
-
-    const newHopeLink = await screen.findByRole('link', { name: /A New Hope/ })
-    await user.click(newHopeLink)
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1, name: 'A New Hope' })).toBeInTheDocument()
-    })
-  })
-
   it('completes the round-trip film → character → film', async () => {
     const user = userEvent.setup()
     renderAppAt('/films/1')

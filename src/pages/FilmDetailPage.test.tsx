@@ -28,18 +28,6 @@ describe('FilmDetailPage', () => {
     expect(c3poLink).toHaveAttribute('href', '/characters/2')
   })
 
-  it('navigates to the character detail page when a character link is clicked', async () => {
-    const user = userEvent.setup()
-    renderAppAt('/films/1')
-
-    const lukeLink = await screen.findByRole('link', { name: 'Luke Skywalker' })
-    await user.click(lukeLink)
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1, name: 'Luke Skywalker' })).toBeInTheDocument()
-    })
-  })
-
   it('renders the in-shell not-found view for an unknown film id', async () => {
     renderAppAt('/films/9999')
 

@@ -8,7 +8,7 @@ describe('AppRoutes', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/handheld/i)
   })
 
-  it('renders the characters placeholder at /characters', () => {
+  it('renders the characters list at /characters', () => {
     renderAppAt('/characters')
     expect(screen.getByRole('heading', { level: 1, name: 'Characters' })).toBeInTheDocument()
   })

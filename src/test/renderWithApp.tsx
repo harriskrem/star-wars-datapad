@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
-import AppRoutes from '@/routes/AppRoutes'
+import AppRoutes from '@/routes'
 import { createQueryClient } from '@/lib/queryClient'
 
 type RenderWithAppOptions = {

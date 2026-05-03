@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import AppRoutes from '@/routes/AppRoutes'
-import RootErrorBoundary from '@/components/error/RootErrorBoundary'
+import AppRoutes from '@/routes'
+import RootErrorBoundary from '@/components/error'
 import { createQueryClient } from '@/lib/queryClient'
 
 export default function App() {

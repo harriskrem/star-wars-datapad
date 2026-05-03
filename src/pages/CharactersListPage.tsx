@@ -9,6 +9,7 @@ import ListErrorState from '@/components/common/ListErrorState'
 import Pagination from '@/components/common/Pagination'
 import SearchInput from '@/components/common/SearchInput'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
+import { scrollToTop } from '@/lib/scrollToTop'
 import { paths } from '@/routes/paths'
 
 const PAGE_SIZE = 10
@@ -61,6 +62,7 @@ export default function CharactersListPage() {
       params.set('page', String(next))
     }
     setSearchParams(params)
+    scrollToTop()
   }
 
   const showEmptyState = !isLoading && !isError && totalCount === 0 && normalizedSearch.length > 0

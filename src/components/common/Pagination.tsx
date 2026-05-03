@@ -10,10 +10,23 @@ type PaginationProps = {
 const buttonBase =
   'inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40'
 
+const WINDOW_SIZE = 5
+
+function getVisiblePages(currentPage: number, pageCount: number): number[] {
+  if (pageCount <= WINDOW_SIZE) {
+    return Array.from({ length: pageCount }, (_, i) => i + 1)
+  }
+  const half = Math.floor(WINDOW_SIZE / 2)
+  let start = Math.max(1, currentPage - half)
+  const end = Math.min(pageCount, start + WINDOW_SIZE - 1)
+  start = Math.max(1, end - WINDOW_SIZE + 1)
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+}
+
 export default function Pagination({ currentPage, pageCount, onPageChange }: PaginationProps) {
   if (pageCount <= 1) return null
 
-  const pages = Array.from({ length: pageCount }, (_, i) => i + 1)
+  const pages = getVisiblePages(currentPage, pageCount)
   const isFirst = currentPage === 1
   const isLast = currentPage === pageCount
 
@@ -41,7 +54,7 @@ export default function Pagination({ currentPage, pageCount, onPageChange }: Pag
             className={cn(
               buttonBase,
               isActive
-                ? 'border-brand bg-muted text-foreground'
+                ? 'bg-brand text-background border-brand font-semibold'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground',
             )}
           >

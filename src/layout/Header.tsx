@@ -5,8 +5,8 @@ import { paths } from '@/routes/paths'
 
 export default function Header() {
   return (
-    <header className="border-border/60 bg-background/90 sticky top-0 z-10 border-b backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+    <header className="border-border/60 bg-background h-16 shrink-0 border-b">
+      <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-4">
         <Link
           to={paths.home}
           className="focus-visible:ring-brand inline-flex items-baseline gap-1.5 rounded-md focus-visible:ring-2 focus-visible:outline-none"

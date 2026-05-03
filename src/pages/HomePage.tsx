@@ -1,32 +1,36 @@
 import { Link } from 'react-router-dom'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useCharacters } from '@/queries/useCharacters'
+import { useFilms } from '@/queries/useFilms'
+import { selectFavouritesCount, useFavouritesStore } from '@/stores/favouritesStore'
 import { paths } from '@/routes/paths'
 
-type SectionLink = {
-  to: string
-  title: string
-  description: string
-}
-
-const sections: SectionLink[] = [
-  {
-    to: paths.characters,
-    title: 'Characters',
-    description: 'Browse every character in the canon, search by name, dig into details.',
-  },
-  {
-    to: paths.films,
-    title: 'Films',
-    description: 'The six saga films — episodes, release dates, opening crawls.',
-  },
-  {
-    to: paths.favourites,
-    title: 'Favourites',
-    description: 'Your bookmarked characters and films, persisted in this browser.',
-  },
-]
-
 export default function HomePage() {
+  const characters = useCharacters()
+  const films = useFilms()
+  const favouritesCount = useFavouritesStore(selectFavouritesCount)
+
+  const sections = [
+    {
+      to: paths.characters,
+      title: 'Characters',
+      count: characters.data?.length,
+      description: 'Browse every character in the canon, search by name, dig into details.',
+    },
+    {
+      to: paths.films,
+      title: 'Films',
+      count: films.data?.length,
+      description: 'The six saga films — episodes, release dates, opening crawls.',
+    },
+    {
+      to: paths.favourites,
+      title: 'Favourites',
+      count: favouritesCount,
+      description: 'Your bookmarked characters and films, persisted in this browser.',
+    },
+  ]
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-12 sm:py-16">
       <header className="flex flex-col gap-4">
@@ -49,7 +53,12 @@ export default function HomePage() {
           >
             <Card className="group-hover:border-brand/40 h-full transition-colors">
               <CardHeader>
-                <CardTitle className="text-2xl">{s.title}</CardTitle>
+                <CardTitle className="flex items-baseline gap-2 text-2xl">
+                  <span>{s.title}</span>
+                  {s.count !== undefined && (
+                    <span className="text-muted-foreground font-mono text-base">· {s.count}</span>
+                  )}
+                </CardTitle>
                 <CardDescription>{s.description}</CardDescription>
               </CardHeader>
             </Card>

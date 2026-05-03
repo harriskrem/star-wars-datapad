@@ -3,6 +3,7 @@ import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import AppRoutes from '@/routes'
+import { Toaster } from '@/components/ui/sonner'
 import { createQueryClient } from '@/lib/queryClient'
 
 type RenderWithAppOptions = {
@@ -15,6 +16,7 @@ export function renderWithApp(ui: ReactElement, options: RenderWithAppOptions = 
   return render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={[options.route ?? '/']}>{ui}</MemoryRouter>
+      <Toaster />
     </QueryClientProvider>,
   )
 }

@@ -4,6 +4,7 @@ import { cleanup } from '@testing-library/react'
 import * as axeMatchers from 'vitest-axe/matchers'
 import type { AxeMatchers } from 'vitest-axe/matchers'
 import { server } from '@/test/server'
+import { useFavouritesStore } from '@/stores/favouritesStore'
 
 declare module 'vitest' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -18,5 +19,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 afterEach(() => {
   cleanup()
   server.resetHandlers()
+  localStorage.clear()
+  useFavouritesStore.setState({ items: [] })
 })
 afterAll(() => server.close())

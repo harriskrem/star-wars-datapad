@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useCharacter } from '@/queries/useCharacters'
 import { useFilmsByUrls } from '@/queries/useFilms'
 import { ApiError } from '@/api/types'
+import FavouriteToggle from '@/components/common/FavouriteToggle'
 import InShellNotFound from '@/components/common/InShellNotFound'
 import ListErrorState from '@/components/common/ListErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -50,7 +51,16 @@ export default function CharacterDetailPage() {
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           Character
         </p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{character.name}</h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{character.name}</h1>
+          <FavouriteToggle
+            type="character"
+            id={id}
+            itemName={character.name}
+            snapshot={{ name: character.name, birth_year: character.birth_year }}
+            size="lg"
+          />
+        </div>
         <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
           <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
             {character.birth_year}

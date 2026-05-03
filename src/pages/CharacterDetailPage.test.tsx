@@ -75,6 +75,21 @@ describe('CharacterDetailPage', () => {
     )
   })
 
+  it('toggling on the detail page updates the nav badge', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters/1')
+
+    await screen.findByRole('heading', { level: 1, name: 'Luke Skywalker' })
+
+    expect(screen.queryByTestId('favourites-count-badge')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Add Luke Skywalker to favourites' }))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
+    })
+  })
+
   it('shows the inline error state and recovers on retry for a non-404 failure', async () => {
     server.use(
       http.get('https://swapi.info/api/people/:id', () => HttpResponse.json({}, { status: 500 })),

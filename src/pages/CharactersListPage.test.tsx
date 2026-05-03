@@ -98,6 +98,39 @@ describe('CharactersListPage', () => {
     expect(screen.getByText('C-3PO')).toBeInTheDocument()
   })
 
+  it('toggling a character card updates the nav badge and shows a confirmation toast', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters')
+
+    await screen.findByText('Luke Skywalker')
+
+    expect(screen.queryByTestId('favourites-count-badge')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Add Luke Skywalker to favourites' }))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
+    })
+    expect(await screen.findByText('Added to favourites')).toBeInTheDocument()
+  })
+
+  it('toggling a favourited card a second time removes it', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/characters')
+
+    await screen.findByText('Luke Skywalker')
+
+    await user.click(screen.getByRole('button', { name: 'Add Luke Skywalker to favourites' }))
+    await waitFor(() => expect(screen.getByTestId('favourites-count-badge')).toBeInTheDocument())
+
+    await user.click(screen.getByRole('button', { name: 'Remove Luke Skywalker from favourites' }))
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('favourites-count-badge')).not.toBeInTheDocument()
+    })
+    expect(await screen.findByText('Removed from favourites')).toBeInTheDocument()
+  })
+
   it('shows the inline error state and recovers on retry', async () => {
     server.use(
       http.get('https://swapi.info/api/people', () => HttpResponse.json([], { status: 500 })),

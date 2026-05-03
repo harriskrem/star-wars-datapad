@@ -10,9 +10,7 @@ export default function Header() {
           to={paths.home}
           className="focus-visible:ring-brand inline-flex items-baseline gap-1.5 rounded-md focus-visible:ring-2 focus-visible:outline-none"
         >
-          <span className="text-base font-semibold tracking-tight sm:text-lg">
-            Star Wars
-          </span>
+          <span className="text-base font-semibold tracking-tight sm:text-lg">Star Wars</span>
           <span className="text-muted-foreground hidden font-mono text-xs tracking-widest uppercase sm:inline">
             Datapad
           </span>

@@ -20,7 +20,7 @@ yarn format           # prettier --write .
 yarn build            # production build into dist/
 ```
 
-Requires **Node 22** and **Yarn 4+**.
+Requires **Node 20+** and **Yarn 4+**.
 
 ---
 

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Yarn 4 transient state
+.yarn/install-state.gz
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

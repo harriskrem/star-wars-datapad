@@ -42,18 +42,6 @@ export default function HomePage() {
           Browse characters and films. Mark favourites you want to revisit. Everything you do here
           lives in this browser.
         </p>
-        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs tracking-widest uppercase">
-          <span aria-hidden="true" className="text-brand">
-            {'>'}
-          </span>
-          <span>{characters.data?.length ?? '—'} Characters</span>
-          <span aria-hidden="true">·</span>
-          <span>{films.data?.length ?? '—'} Films</span>
-          <span aria-hidden="true">·</span>
-          <span className={favouritesCount > 0 ? 'text-brand' : undefined}>
-            {favouritesCount} Favourites
-          </span>
-        </div>
       </header>
 
       <nav aria-label="Sections" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

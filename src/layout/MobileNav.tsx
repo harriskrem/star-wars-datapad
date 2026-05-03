@@ -51,6 +51,7 @@ export default function MobileNav() {
               <li key={item.to}>
                 <NavLink
                   to={item.to}
+                  viewTransition
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     cn(

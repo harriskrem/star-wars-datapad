@@ -22,7 +22,7 @@ export default function InShellNotFound({
       <p className="text-muted-foreground mt-3">
         We couldn&rsquo;t find a {resourceName.toLowerCase()} with that id.
       </p>
-      <Link to={backHref} className={cn(buttonVariants(), 'mt-6 h-9 px-4')}>
+      <Link to={backHref} viewTransition className={cn(buttonVariants(), 'mt-6 h-9 px-4')}>
         {backLabel}
       </Link>
     </div>

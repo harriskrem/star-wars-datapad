@@ -53,13 +53,6 @@ Requires **Node 20+** and **Yarn 4+**.
 
 The app fetches Star Wars data from [`swapi.info`](https://swapi.info) rather than the more famous `swapi.dev`. Reason: `swapi.dev`'s TLS certificate is expired, which means browsers hard-block all requests to it (no client-side workaround possible). `swapi.info` is the maintained mirror with the same data and a valid certificate.
 
-`swapi.info` differs from `swapi.dev` in two practical ways:
-
-1. **List endpoints return flat arrays**, not the `{ count, next, previous, results }` envelope that `swapi.dev` uses.
-2. **No server-side pagination or search.** `?page=N` and `?search=X` query parameters are ignored.
-
-Consequently, **pagination and search are implemented client-side** over a single fetched-and-cached list. The brief asks for "debounced API calls for filtering," but with no real network request to debounce, we instead debounce the input → URL/state update (the filter itself runs synchronously over the cached array).
-
 ---
 
 ## Testing

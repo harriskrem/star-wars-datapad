@@ -51,6 +51,7 @@ export default function CharacterDetailPage() {
       <header className="mb-10 flex flex-col gap-3">
         <Link
           to={paths.characters}
+          viewTransition
           className="text-muted-foreground hover:text-foreground focus-visible:ring-brand inline-flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           <ArrowLeft className="size-3.5" aria-hidden="true" />
@@ -103,6 +104,7 @@ export default function CharacterDetailPage() {
                 <li key={q.data.url}>
                   <Link
                     to={paths.filmDetail(extractIdFromUrl(q.data.url))}
+                    viewTransition
                     className="bg-muted hover:bg-muted/70 focus-visible:ring-brand inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
                   >
                     <span className="text-muted-foreground font-mono text-xs">

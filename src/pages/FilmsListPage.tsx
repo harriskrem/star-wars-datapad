@@ -97,6 +97,7 @@ export default function FilmsListPage() {
                   <Link
                     key={f.url}
                     to={paths.filmDetail(extractIdFromUrl(f.url))}
+                    viewTransition
                     className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
                   >
                     <FilmCard film={f} />

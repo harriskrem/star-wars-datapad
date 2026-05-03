@@ -13,7 +13,7 @@ export default function NotFoundPage() {
       <p className="text-muted-foreground">
         The route you tried doesn&rsquo;t match anything in this datapad.
       </p>
-      <Link to={paths.home} className={cn(buttonVariants(), 'h-9 px-4')}>
+      <Link to={paths.home} viewTransition className={cn(buttonVariants(), 'h-9 px-4')}>
         Return home
       </Link>
     </div>

@@ -21,6 +21,7 @@ export default function Nav() {
           <li key={item.to}>
             <NavLink
               to={item.to}
+              viewTransition
               className={({ isActive }) =>
                 cn(
                   'focus-visible:ring-brand inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none sm:px-3',

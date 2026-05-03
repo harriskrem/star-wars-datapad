@@ -28,7 +28,11 @@ export default function FavouritesPage() {
           title="No favourites yet"
           description="Star characters and films you want to revisit."
           cta={
-            <Link to={paths.characters} className={cn(buttonVariants(), 'h-9 px-4')}>
+            <Link
+              to={paths.characters}
+              viewTransition
+              className={cn(buttonVariants(), 'h-9 px-4')}
+            >
               Browse characters
             </Link>
           }
@@ -177,6 +181,7 @@ function FavouriteEntryShell({
       ) : (
         <Link
           to={detailHref}
+          viewTransition
           className="focus-visible:ring-brand group block rounded-xl focus-visible:ring-2 focus-visible:outline-none"
         >
           {cardInner}

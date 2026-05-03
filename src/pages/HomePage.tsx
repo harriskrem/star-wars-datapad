@@ -49,6 +49,7 @@ export default function HomePage() {
           <Link
             key={s.to}
             to={s.to}
+            viewTransition
             className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
           >
             <Card className="h-full transition duration-[120ms] ease-out group-hover:bg-brand/5 group-hover:shadow-sm group-hover:ring-brand/50 motion-safe:group-hover:-translate-y-0.5">

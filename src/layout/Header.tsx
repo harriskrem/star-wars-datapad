@@ -9,6 +9,7 @@ export default function Header() {
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-4">
         <Link
           to={paths.home}
+          viewTransition
           className="focus-visible:ring-brand inline-flex items-baseline gap-1.5 rounded-md focus-visible:ring-2 focus-visible:outline-none"
         >
           <span className="font-display text-lg tracking-wide uppercase sm:text-xl">Star Wars</span>

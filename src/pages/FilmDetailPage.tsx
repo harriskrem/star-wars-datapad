@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import { useFilm } from '@/queries/useFilms'
 import { useCharactersByUrls } from '@/queries/useCharacters'
 import { ApiError } from '@/api/types'
@@ -44,7 +45,13 @@ export default function FilmDetailPage() {
   return (
     <article className="mx-auto max-w-4xl px-4 py-12">
       <header className="mb-10 flex flex-col gap-3">
-        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Film</p>
+        <Link
+          to={paths.films}
+          className="text-muted-foreground hover:text-foreground focus-visible:ring-brand inline-flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          Films
+        </Link>
         <div className="flex items-start justify-between gap-4">
           <h1 className="font-display text-5xl tracking-wide uppercase sm:text-6xl">
             {film.title}
@@ -134,7 +141,7 @@ function FilmDetailSkeleton() {
   return (
     <article className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-10 flex flex-col gap-3">
-        <Skeleton className="h-3 w-12" />
+        <Skeleton className="h-3 w-20" />
         <Skeleton className="h-12 w-3/4" />
         <Skeleton className="h-4 w-40" />
       </div>

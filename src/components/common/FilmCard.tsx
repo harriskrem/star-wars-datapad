@@ -26,7 +26,9 @@ export default function FilmCard({ film }: FilmCardProps) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="pr-12 text-xl">{film.title}</CardTitle>
+        <CardTitle className="font-display pr-12 text-2xl tracking-wide uppercase">
+          {film.title}
+        </CardTitle>
         <CardDescription className="flex flex-wrap items-center gap-x-2 gap-y-1 pt-1">
           <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
             Episode {toRomanNumeral(film.episode_id)}

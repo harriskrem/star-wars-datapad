@@ -761,6 +761,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/bebas-neue@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "@fontsource/bebas-neue@npm:5.2.7"
+  checksum: 10c0/bc9bfaa9ddeb5df4bc4c1020773cf93206500725d2684c59f7d0dc11612dca1dff7adace615d10394a4bb0e59f5964fa5ae5938cfc2190257472a8177c26ac72
+  languageName: node
+  linkType: hard
+
 "@hono/node-server@npm:^1.19.9":
   version: 1.19.14
   resolution: "@hono/node-server@npm:1.19.14"
@@ -6159,6 +6166,7 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@fontsource-variable/geist": "npm:^5.2.8"
     "@fontsource-variable/geist-mono": "npm:^5.2.7"
+    "@fontsource/bebas-neue": "npm:^5.2.7"
     "@tailwindcss/vite": "npm:^4.2.4"
     "@tanstack/react-query": "npm:^5.100.8"
     "@tanstack/react-query-devtools": "npm:^5.100.8"

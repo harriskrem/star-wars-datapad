@@ -54,7 +54,7 @@ export default function HomePage() {
             <Card className="group-hover:border-brand/40 h-full transition-colors">
               <CardHeader>
                 <CardTitle className="flex items-baseline gap-2 text-2xl">
-                  <span>{s.title}</span>
+                  <span className="font-display tracking-wide uppercase">{s.title}</span>
                   {s.count !== undefined && (
                     <span className="text-muted-foreground font-mono text-base">· {s.count}</span>
                   )}

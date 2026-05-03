@@ -16,7 +16,7 @@ export default function InShellNotFound({
   return (
     <div className="mx-auto max-w-xl px-4 py-16 text-center">
       <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">404</p>
-      <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h1 className="font-display mt-2 text-4xl tracking-wide uppercase sm:text-5xl">
         {resourceName} not found
       </h1>
       <p className="text-muted-foreground mt-3">

@@ -46,7 +46,9 @@ export default function FilmDetailPage() {
       <header className="mb-10 flex flex-col gap-3">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Film</p>
         <div className="flex items-start justify-between gap-4">
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{film.title}</h1>
+          <h1 className="font-display text-5xl tracking-wide uppercase sm:text-6xl">
+            {film.title}
+          </h1>
           <FavouriteToggle
             type="film"
             id={id}

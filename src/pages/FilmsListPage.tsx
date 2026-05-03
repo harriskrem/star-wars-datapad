@@ -67,7 +67,7 @@ export default function FilmsListPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <header className="mb-8 flex flex-col gap-2">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Section</p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Films</h1>
+        <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Films</h1>
       </header>
 
       <div className="mb-8 max-w-md">

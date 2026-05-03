@@ -52,7 +52,9 @@ export default function CharacterDetailPage() {
           Character
         </p>
         <div className="flex items-start justify-between gap-4">
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{character.name}</h1>
+          <h1 className="font-display text-5xl tracking-wide uppercase sm:text-6xl">
+            {character.name}
+          </h1>
           <FavouriteToggle
             type="character"
             id={id}

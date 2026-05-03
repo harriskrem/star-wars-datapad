@@ -28,11 +28,7 @@ export default function FavouritesPage() {
           title="No favourites yet"
           description="Star characters and films you want to revisit."
           cta={
-            <Link
-              to={paths.characters}
-              viewTransition
-              className={cn(buttonVariants(), 'h-9 px-4')}
-            >
+            <Link to={paths.characters} viewTransition className={cn(buttonVariants(), 'h-9 px-4')}>
               Browse characters
             </Link>
           }

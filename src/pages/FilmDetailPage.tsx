@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useFilm } from '@/queries/useFilms'
 import { useCharactersByUrls } from '@/queries/useCharacters'
 import { ApiError } from '@/api/types'
+import FavouriteToggle from '@/components/common/FavouriteToggle'
 import InShellNotFound from '@/components/common/InShellNotFound'
 import ListErrorState from '@/components/common/ListErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -44,7 +45,20 @@ export default function FilmDetailPage() {
     <article className="mx-auto max-w-4xl px-4 py-12">
       <header className="mb-10 flex flex-col gap-3">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Film</p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{film.title}</h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{film.title}</h1>
+          <FavouriteToggle
+            type="film"
+            id={id}
+            itemName={film.title}
+            snapshot={{
+              name: film.title,
+              episode_id: film.episode_id,
+              release_date: film.release_date,
+            }}
+            size="lg"
+          />
+        </div>
         <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
           <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
             Episode {toRomanNumeral(film.episode_id)}

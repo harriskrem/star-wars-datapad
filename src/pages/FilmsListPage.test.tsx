@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { renderAppAt } from '@/test/renderWithApp'
 import { server } from '@/test/server'
+import { useFavouritesStore } from '@/stores/favouritesStore'
 
 describe('FilmsListPage', () => {
   it('renders all six films with episode, release date, and director', async () => {
@@ -47,6 +48,53 @@ describe('FilmsListPage', () => {
 
     expect(await screen.findByText(/nothing matched/i)).toBeInTheDocument()
     expect(screen.getByText(/try a different title/i)).toBeInTheDocument()
+  })
+
+  it('toggling a film card adds to favourites and shows a confirmation toast', async () => {
+    const user = userEvent.setup()
+    renderAppAt('/films')
+
+    await screen.findByText('A New Hope')
+
+    expect(screen.queryByTestId('favourites-count-badge')).not.toBeInTheDocument()
+
+    await user.click(
+      screen.getByRole('button', { name: 'Add A New Hope to favourites' }),
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
+    })
+    expect(await screen.findByText('Added to favourites')).toBeInTheDocument()
+  })
+
+  it('counts mixed character and film favourites in the nav badge', async () => {
+    const user = userEvent.setup()
+    // Pre-populate one character favourite (simulates state restored from localStorage on mount).
+    useFavouritesStore.setState({
+      schemaVersion: 1,
+      items: [
+        {
+          type: 'character',
+          id: '1',
+          addedAt: Date.now(),
+          snapshot: { name: 'Luke Skywalker' },
+        },
+      ],
+    })
+
+    renderAppAt('/films')
+
+    await screen.findByText('A New Hope')
+    expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('1')
+
+    await user.click(
+      screen.getByRole('button', { name: 'Add A New Hope to favourites' }),
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('favourites-count-badge')).toHaveTextContent('2')
+    })
   })
 
   it('shows the inline error state and recovers on retry', async () => {

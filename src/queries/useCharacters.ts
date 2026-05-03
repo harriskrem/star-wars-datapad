@@ -1,5 +1,6 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCharacter, getCharacters } from '@/api/characters'
+import type { Character } from '@/api/types'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
 
 const ONE_HOUR_MS = 1000 * 60 * 60
@@ -11,6 +12,20 @@ export function useCharacters() {
   return useQuery({
     queryKey: charactersQueryKey,
     queryFn: getCharacters,
+  })
+}
+
+export function useCharacter(id: string) {
+  const queryClient = useQueryClient()
+
+  return useQuery({
+    queryKey: characterQueryKey(id),
+    queryFn: () => getCharacter(id),
+    staleTime: ONE_HOUR_MS,
+    initialData: () => {
+      const cached = queryClient.getQueryData<Character[]>(charactersQueryKey)
+      return cached?.find((c) => extractIdFromUrl(c.url) === id)
+    },
   })
 }
 

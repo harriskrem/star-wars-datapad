@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useCharacters } from '@/queries/useCharacters'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import CharacterCard from '@/components/common/CharacterCard'
@@ -8,6 +8,8 @@ import EmptyState from '@/components/common/EmptyState'
 import ListErrorState from '@/components/common/ListErrorState'
 import Pagination from '@/components/common/Pagination'
 import SearchInput from '@/components/common/SearchInput'
+import { extractIdFromUrl } from '@/lib/swapiUrl'
+import { paths } from '@/routes/paths'
 
 const PAGE_SIZE = 10
 
@@ -91,7 +93,15 @@ export default function CharactersListPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {isLoading
               ? Array.from({ length: PAGE_SIZE }).map((_, i) => <CharacterCardSkeleton key={i} />)
-              : visible.map((c) => <CharacterCard key={c.url} character={c} />)}
+              : visible.map((c) => (
+                  <Link
+                    key={c.url}
+                    to={paths.characterDetail(extractIdFromUrl(c.url))}
+                    className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    <CharacterCard character={c} />
+                  </Link>
+                ))}
           </div>
 
           {!isLoading && pageCount > 1 && (

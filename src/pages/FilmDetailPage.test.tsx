@@ -28,15 +28,16 @@ describe('FilmDetailPage', () => {
     expect(c3poLink).toHaveAttribute('href', '/characters/2')
   })
 
-  it('navigates to the character placeholder when a character link is clicked', async () => {
+  it('navigates to the character detail page when a character link is clicked', async () => {
     const user = userEvent.setup()
     renderAppAt('/films/1')
 
     const lukeLink = await screen.findByRole('link', { name: 'Luke Skywalker' })
     await user.click(lukeLink)
 
-    // Placeholder for /characters/:id renders heading "Character"
-    expect(await screen.findByRole('heading', { level: 1, name: 'Character' })).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { level: 1, name: 'Luke Skywalker' })).toBeInTheDocument()
+    })
   })
 
   it('renders the in-shell not-found view for an unknown film id', async () => {

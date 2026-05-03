@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { getFilm, getFilms } from '@/api/films'
+import { extractIdFromUrl } from '@/lib/swapiUrl'
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24
 
@@ -19,5 +20,18 @@ export function useFilm(id: string) {
     queryKey: filmQueryKey(id),
     queryFn: () => getFilm(id),
     staleTime: ONE_DAY_MS,
+  })
+}
+
+export function useFilmsByUrls(urls: string[]) {
+  return useQueries({
+    queries: urls.map((url) => {
+      const id = extractIdFromUrl(url)
+      return {
+        queryKey: filmQueryKey(id),
+        queryFn: () => getFilm(id),
+        staleTime: ONE_DAY_MS,
+      }
+    }),
   })
 }

@@ -12,7 +12,7 @@ export default function FilmCard({ film }: FilmCardProps) {
   const id = extractIdFromUrl(film.url)
 
   return (
-    <Card className="relative h-full">
+    <Card className="relative h-full transition duration-[120ms] ease-out group-hover:shadow-sm group-hover:ring-foreground/30 motion-safe:group-hover:-translate-y-0.5">
       <div className="absolute top-1 right-1">
         <FavouriteToggle
           type="film"

@@ -33,15 +33,27 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-12 sm:py-16">
-      <header className="flex flex-col gap-4">
+      <header className="flex flex-col gap-6">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Datapad</p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="font-display text-5xl leading-[1.05] tracking-wide text-balance uppercase sm:text-6xl lg:text-7xl">
           A handheld for the Star&nbsp;Wars galaxy.
         </h1>
         <p className="text-muted-foreground max-w-prose text-lg">
           Browse characters and films. Mark favourites you want to revisit. Everything you do here
           lives in this browser.
         </p>
+        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs tracking-widest uppercase">
+          <span aria-hidden="true" className="text-brand">
+            {'>'}
+          </span>
+          <span>{characters.data?.length ?? '—'} Characters</span>
+          <span aria-hidden="true">·</span>
+          <span>{films.data?.length ?? '—'} Films</span>
+          <span aria-hidden="true">·</span>
+          <span className={favouritesCount > 0 ? 'text-brand' : undefined}>
+            {favouritesCount} Favourites
+          </span>
+        </div>
       </header>
 
       <nav aria-label="Sections" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -51,7 +63,7 @@ export default function HomePage() {
             to={s.to}
             className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
           >
-            <Card className="group-hover:border-brand/40 h-full transition-colors">
+            <Card className="h-full transition duration-[120ms] ease-out group-hover:bg-brand/5 group-hover:shadow-sm group-hover:ring-brand/50 motion-safe:group-hover:-translate-y-0.5">
               <CardHeader>
                 <CardTitle className="flex items-baseline gap-2 text-2xl">
                   <span className="font-display tracking-wide uppercase">{s.title}</span>

@@ -140,7 +140,12 @@ function FavouriteEntryShell({
   children?: React.ReactNode
 }) {
   const cardInner = (
-    <Card className={cn('relative h-full', isMissing && 'opacity-70')}>
+    <Card
+      className={cn(
+        'relative h-full transition duration-[120ms] ease-out group-hover:shadow-sm group-hover:ring-foreground/30 motion-safe:group-hover:-translate-y-0.5',
+        isMissing && 'opacity-70',
+      )}
+    >
       <div className="absolute top-1 right-1">
         <FavouriteToggle type={type} id={id} itemName={name} snapshot={snapshot} />
       </div>
@@ -172,7 +177,7 @@ function FavouriteEntryShell({
       ) : (
         <Link
           to={detailHref}
-          className="focus-visible:ring-brand block rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+          className="focus-visible:ring-brand group block rounded-xl focus-visible:ring-2 focus-visible:outline-none"
         >
           {cardInner}
         </Link>

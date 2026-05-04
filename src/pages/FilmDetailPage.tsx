@@ -6,7 +6,6 @@ import { ApiError } from '@/api/types'
 import FavouriteToggle from '@/components/common/FavouriteToggle'
 import InShellNotFound from '@/components/common/InShellNotFound'
 import ListErrorState from '@/components/common/ListErrorState'
-import OpeningCrawl from '@/components/common/OpeningCrawl'
 import { Skeleton } from '@/components/ui/skeleton'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
 import { toRomanNumeral } from '@/lib/romanNumeral'
@@ -79,7 +78,18 @@ export default function FilmDetailPage() {
           <DetailField label="Produced by" value={film.producer} />
         </div>
 
-        <OpeningCrawl title={film.title} episodeId={film.episode_id} text={film.opening_crawl} />
+        <section className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold tracking-widest uppercase">Opening crawl</h2>
+          <div className="text-brand flex w-full max-w-lg flex-col gap-4 font-mono text-sm leading-relaxed text-justify [text-align-last:left] hyphens-auto">
+            {film.opening_crawl
+              .split(/\r?\n\s*\r?\n+/)
+              .map((p) => p.replace(/\r?\n/g, ' ').trim())
+              .filter(Boolean)
+              .map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+          </div>
+        </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-sm font-semibold tracking-widest uppercase">Characters</h2>

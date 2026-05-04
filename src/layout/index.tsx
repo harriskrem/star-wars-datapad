@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Header from '@/layout/Header'
+import Footer from '@/layout/Footer'
 import StorageBanner from '@/components/common/StorageBanner'
 
 export default function RootLayout() {
@@ -10,6 +11,7 @@ export default function RootLayout() {
       <main id="main" className="flex-1 overflow-y-auto">
         <Outlet />
       </main>
+      <Footer />
     </div>
   )
 }

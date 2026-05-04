@@ -27,9 +27,11 @@ export default function CharacterCard({ character }: CharacterCardProps) {
           {character.name}
         </CardTitle>
         <CardDescription className="flex flex-wrap items-center gap-x-2 gap-y-1 pt-1">
-          <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-            {character.birth_year}
-          </span>
+          {character.birth_year !== 'unknown' && (
+            <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
+              {character.birth_year}
+            </span>
+          )}
           <span className="capitalize">{character.gender}</span>
           <span aria-hidden="true">·</span>
           <span>

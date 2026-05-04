@@ -70,9 +70,11 @@ export default function CharacterDetailPage() {
           />
         </div>
         <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-            {character.birth_year}
-          </span>
+          {character.birth_year !== 'unknown' && (
+            <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
+              {character.birth_year}
+            </span>
+          )}
           <span className="capitalize">{character.gender}</span>
         </div>
       </header>

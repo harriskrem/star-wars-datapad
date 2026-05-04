@@ -9,7 +9,6 @@ import ListErrorState from '@/components/common/ListErrorState'
 import Pagination from '@/components/common/Pagination'
 import SearchInput from '@/components/common/SearchInput'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
-import { scrollToTop } from '@/lib/scrollToTop'
 import { paths } from '@/routes/paths'
 
 const PAGE_SIZE = 10
@@ -60,7 +59,7 @@ export default function FilmsListPage() {
       params.set('page', String(next))
     }
     setSearchParams(params)
-    scrollToTop()
+    document.getElementById('main')?.scrollTo?.({ top: 0, behavior: 'instant' })
   }
 
   const showEmptyState = !isLoading && !isError && totalCount === 0 && normalizedSearch.length > 0
@@ -90,7 +89,10 @@ export default function FilmsListPage() {
         />
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            key={isLoading ? 'loading' : `page-${page}`}
+            className="pagination-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
             {isLoading
               ? Array.from({ length: 3 }).map((_, i) => <FilmCardSkeleton key={i} />)
               : visible.map((f) => (

@@ -159,9 +159,22 @@
   }
 }
 
+.pagination-grid {
+  animation: pagination-grid-in 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pagination-grid-in {
+  from {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
+    animation: none;
+  }
+  .pagination-grid {
     animation: none;
   }
 }

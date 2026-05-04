@@ -8,7 +8,7 @@ type PaginationProps = {
 }
 
 const buttonBase =
-  'inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-2 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40'
+  'inline-flex h-9 min-w-9 cursor-pointer items-center justify-center rounded-md border border-transparent px-2 text-sm select-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40'
 
 const WINDOW_SIZE = 5
 
@@ -31,7 +31,10 @@ export default function Pagination({ currentPage, pageCount, onPageChange }: Pag
   const isLast = currentPage === pageCount
 
   return (
-    <nav aria-label="Pagination" className="flex items-center justify-center gap-1">
+    <nav
+      aria-label="Pagination"
+      className="pagination-nav flex items-center justify-center gap-1"
+    >
       <button
         type="button"
         onClick={() => onPageChange(currentPage - 1)}

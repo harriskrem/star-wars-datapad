@@ -218,13 +218,7 @@
     #000 38%,
     #000 100%
   );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 6%,
-    #000 38%,
-    #000 100%
-  );
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 6%, #000 38%, #000 100%);
 }
 
 .sw-crawl-warp {

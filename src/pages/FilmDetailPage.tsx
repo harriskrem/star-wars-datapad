@@ -84,11 +84,7 @@ export default function FilmDetailPage() {
       </div>
 
       <div className="mt-10">
-        <OpeningCrawl
-          title={film.title}
-          episodeId={film.episode_id}
-          text={film.opening_crawl}
-        />
+        <OpeningCrawl title={film.title} episodeId={film.episode_id} text={film.opening_crawl} />
       </div>
 
       <section className="mt-10">

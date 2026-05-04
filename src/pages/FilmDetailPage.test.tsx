@@ -10,7 +10,7 @@ describe('FilmDetailPage', () => {
     renderAppAt('/films/1')
 
     expect(await screen.findByRole('heading', { level: 1, name: 'A New Hope' })).toBeInTheDocument()
-    expect(screen.getByText('Episode IV')).toBeInTheDocument()
+    expect(screen.getAllByText('Episode IV').length).toBeGreaterThan(0)
     expect(screen.getByText('1977-05-25')).toBeInTheDocument()
     expect(screen.getByText('George Lucas')).toBeInTheDocument()
     expect(screen.getByText(/Gary Kurtz/)).toBeInTheDocument()

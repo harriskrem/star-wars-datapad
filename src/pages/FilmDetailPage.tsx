@@ -6,6 +6,7 @@ import { ApiError } from '@/api/types'
 import FavouriteToggle from '@/components/common/FavouriteToggle'
 import InShellNotFound from '@/components/common/InShellNotFound'
 import ListErrorState from '@/components/common/ListErrorState'
+import OpeningCrawl from '@/components/common/OpeningCrawl'
 import { Skeleton } from '@/components/ui/skeleton'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
 import { toRomanNumeral } from '@/lib/romanNumeral'
@@ -82,12 +83,13 @@ export default function FilmDetailPage() {
         <DetailField label="Produced by" value={film.producer} />
       </div>
 
-      <section className="mt-10">
-        <h2 className="mb-3 text-sm font-semibold tracking-widest uppercase">Opening crawl</h2>
-        <p className="text-muted-foreground font-mono text-sm leading-relaxed whitespace-pre-line">
-          {film.opening_crawl}
-        </p>
-      </section>
+      <div className="mt-10">
+        <OpeningCrawl
+          title={film.title}
+          episodeId={film.episode_id}
+          text={film.opening_crawl}
+        />
+      </div>
 
       <section className="mt-10">
         <h2 className="mb-3 text-sm font-semibold tracking-widest uppercase">Characters</h2>

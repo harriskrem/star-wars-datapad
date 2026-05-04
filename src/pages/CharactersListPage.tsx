@@ -100,7 +100,7 @@ export default function CharactersListPage() {
                     key={c.url}
                     to={paths.characterDetail(extractIdFromUrl(c.url))}
                     viewTransition
-                    className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+                    className="group rounded-xl focus-visible:outline-none"
                   >
                     <CharacterCard character={c} />
                   </Link>

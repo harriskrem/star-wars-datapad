@@ -142,7 +142,7 @@ function FavouriteEntryShell({
   const cardInner = (
     <Card
       className={cn(
-        'relative h-full transition duration-[120ms] ease-out group-hover:shadow-sm group-hover:ring-foreground/30 motion-safe:group-hover:-translate-y-0.5',
+        'relative h-full transition-[box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]',
         isMissing && 'opacity-70',
       )}
     >
@@ -178,7 +178,7 @@ function FavouriteEntryShell({
         <Link
           to={detailHref}
           viewTransition
-          className="focus-visible:ring-brand group block rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+          className="group block rounded-xl focus-visible:outline-none"
         >
           {cardInner}
         </Link>

@@ -50,14 +50,16 @@ export default function HomePage() {
             key={s.to}
             to={s.to}
             viewTransition
-            className="focus-visible:ring-brand group rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+            className="group rounded-xl focus-visible:outline-none"
           >
-            <Card className="h-full transition duration-[120ms] ease-out group-hover:bg-brand/5 group-hover:shadow-sm group-hover:ring-brand/50 motion-safe:group-hover:-translate-y-0.5">
+            <Card className="h-full transition-[box-shadow,color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]">
               <CardHeader>
                 <CardTitle className="flex items-baseline gap-2 text-2xl">
                   <span className="font-display tracking-wide uppercase">{s.title}</span>
-                  {s.count !== undefined && (
-                    <span className="text-muted-foreground font-mono text-base">· {s.count}</span>
+                  {!!s.count && (
+                    <span className="text-muted-foreground font-mono text-base transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-brand group-focus-visible:text-brand">
+                      · {s.count}
+                    </span>
                   )}
                 </CardTitle>
                 <CardDescription>{s.description}</CardDescription>

@@ -28,108 +28,94 @@ export default function FilmDetailPage() {
       )
     }
     return (
-      <div className="mx-auto max-w-4xl px-4 py-12">
-        <ListErrorState onRetry={() => refetch()} title="Couldn't load this film" />
+      <div className="flex justify-center px-4 py-12">
+        <div className="flex w-full max-w-4xl flex-col">
+          <ListErrorState onRetry={() => refetch()} title="Couldn't load this film" />
+        </div>
       </div>
     )
   }
 
   if (!film) return null
 
-  const otherCounts = [
-    film.planets.length && `${film.planets.length} planets`,
-    film.species.length && `${film.species.length} species`,
-    film.vehicles.length && `${film.vehicles.length} vehicles`,
-    film.starships.length && `${film.starships.length} starships`,
-  ].filter(Boolean)
-
   return (
-    <article className="mx-auto max-w-4xl px-4 py-12">
-      <header className="mb-10 flex flex-col gap-3">
-        <Link
-          to={paths.films}
-          viewTransition
-          className="text-muted-foreground hover:text-foreground focus-visible:ring-brand inline-flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
-        >
-          <ArrowLeft className="size-3.5" aria-hidden="true" />
-          Films
-        </Link>
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="font-display text-5xl tracking-wide uppercase sm:text-6xl">
-            {film.title}
-          </h1>
-          <FavouriteToggle
-            type="film"
-            id={id}
-            itemName={film.title}
-            snapshot={{
-              name: film.title,
-              episode_id: film.episode_id,
-              release_date: film.release_date,
-            }}
-            size="lg"
-          />
-        </div>
-        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-            Episode {toRomanNumeral(film.episode_id)}
-          </span>
-          <span>{film.release_date}</span>
-        </div>
-      </header>
+    <div className="flex justify-center px-4 py-12">
+      <article className="flex w-full max-w-4xl flex-col gap-10">
+        <header className="flex flex-col gap-3">
+          <Link
+            to={paths.films}
+            viewTransition
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-brand inline-flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          >
+            <ArrowLeft className="size-3.5" aria-hidden="true" />
+            Films
+          </Link>
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="font-display text-5xl tracking-wide uppercase sm:text-6xl">
+              {film.title}
+            </h1>
+            <FavouriteToggle
+              type="film"
+              id={id}
+              itemName={film.title}
+              snapshot={{
+                name: film.title,
+                episode_id: film.episode_id,
+                release_date: film.release_date,
+              }}
+              size="lg"
+            />
+          </div>
+          <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
+              Episode {toRomanNumeral(film.episode_id)}
+            </span>
+            <span>{film.release_date}</span>
+          </div>
+        </header>
 
-      <div className="grid gap-10 sm:grid-cols-2">
-        <DetailField label="Directed by" value={film.director} />
-        <DetailField label="Produced by" value={film.producer} />
-      </div>
+        <div className="grid gap-10 sm:grid-cols-2">
+          <DetailField label="Directed by" value={film.director} />
+          <DetailField label="Produced by" value={film.producer} />
+        </div>
 
-      <div className="mt-10">
         <OpeningCrawl title={film.title} episodeId={film.episode_id} text={film.opening_crawl} />
-      </div>
 
-      <section className="mt-10">
-        <h2 className="mb-3 text-sm font-semibold tracking-widest uppercase">Characters</h2>
-        <ul className="flex flex-wrap gap-2">
-          {characterQueries.map((q, i) => {
-            if (q.isLoading) {
+        <section className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold tracking-widest uppercase">Characters</h2>
+          <ul className="flex flex-wrap gap-2">
+            {characterQueries.map((q, i) => {
+              if (q.isLoading) {
+                return (
+                  <li key={i}>
+                    <Skeleton className="h-7 w-32" />
+                  </li>
+                )
+              }
+              if (!q.data) return null
               return (
-                <li key={i}>
-                  <Skeleton className="h-7 w-32" />
+                <li key={q.data.url}>
+                  <Link
+                    to={paths.characterDetail(extractIdFromUrl(q.data.url))}
+                    viewTransition
+                    className="bg-muted hover:bg-muted/70 focus-visible:ring-brand inline-flex items-center rounded-md px-3 py-1 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    {q.data.name}
+                  </Link>
                 </li>
               )
-            }
-            if (!q.data) return null
-            return (
-              <li key={q.data.url}>
-                <Link
-                  to={paths.characterDetail(extractIdFromUrl(q.data.url))}
-                  viewTransition
-                  className="bg-muted hover:bg-muted/70 focus-visible:ring-brand inline-flex items-center rounded-md px-3 py-1 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
-                >
-                  {q.data.name}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
-
-      {otherCounts.length > 0 && (
-        <section className="mt-10">
-          <h2 className="mb-3 text-sm font-semibold tracking-widest uppercase">Other related</h2>
-          <p className="text-muted-foreground text-sm">
-            {otherCounts.join(' · ')} <span className="text-xs">(not browsable in this app)</span>
-          </p>
+            })}
+          </ul>
         </section>
-      )}
-    </article>
+      </article>
+    </div>
   )
 }
 
 function DetailField({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <h2 className="text-muted-foreground mb-1 text-xs font-semibold tracking-widest uppercase">
+    <div className="flex flex-col gap-1">
+      <h2 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
         {label}
       </h2>
       <p className="text-base">{value}</p>
@@ -139,20 +125,22 @@ function DetailField({ label, value }: { label: string; value: string }) {
 
 function FilmDetailSkeleton() {
   return (
-    <article className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-10 flex flex-col gap-3">
-        <Skeleton className="h-3 w-20" />
-        <Skeleton className="h-12 w-3/4" />
-        <Skeleton className="h-4 w-40" />
-      </div>
-      <div className="grid gap-10 sm:grid-cols-2">
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
-      </div>
-      <div className="mt-10 space-y-2">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-32 w-full" />
-      </div>
-    </article>
+    <div className="flex justify-center px-4 py-12">
+      <article className="flex w-full max-w-4xl flex-col gap-10">
+        <div className="flex flex-col gap-3">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-12 w-3/4" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+        <div className="grid gap-10 sm:grid-cols-2">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-32 w-full" />
+        </div>
+      </article>
+    </div>
   )
 }

@@ -65,59 +65,61 @@ export default function FilmsListPage() {
   const showEmptyState = !isLoading && !isError && totalCount === 0 && normalizedSearch.length > 0
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <header className="mb-8 flex flex-col gap-2">
-        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Section</p>
-        <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Films</h1>
-      </header>
+    <div className="flex justify-center px-4 py-12">
+      <div className="flex w-full max-w-6xl flex-col gap-8">
+        <header className="flex flex-col gap-2">
+          <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+            Section
+          </p>
+          <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Films</h1>
+        </header>
 
-      <div className="mb-8 max-w-md">
-        <SearchInput
-          label="Search films by title"
-          value={inputValue}
-          onChange={setInputValue}
-          placeholder="Search by title…"
-        />
-      </div>
+        <div className="flex max-w-md flex-col">
+          <SearchInput
+            label="Search films by title"
+            value={inputValue}
+            onChange={setInputValue}
+            placeholder="Search by title…"
+          />
+        </div>
 
-      {isError ? (
-        <ListErrorState onRetry={() => refetch()} />
-      ) : showEmptyState ? (
-        <EmptyState
-          title={`Nothing matched ‘${debouncedSearch.trim()}’`}
-          description="Try a different title."
-        />
-      ) : (
-        <>
-          <div
-            key={isLoading ? 'loading' : `page-${page}`}
-            className="pagination-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {isLoading
-              ? Array.from({ length: 3 }).map((_, i) => <FilmCardSkeleton key={i} />)
-              : visible.map((f) => (
-                  <Link
-                    key={f.url}
-                    to={paths.filmDetail(extractIdFromUrl(f.url))}
-                    viewTransition
-                    className="group rounded-xl focus-visible:outline-none"
-                  >
-                    <FilmCard film={f} />
-                  </Link>
-                ))}
-          </div>
+        {isError ? (
+          <ListErrorState onRetry={() => refetch()} />
+        ) : showEmptyState ? (
+          <EmptyState
+            title={`Nothing matched ‘${debouncedSearch.trim()}’`}
+            description="Try a different title."
+          />
+        ) : (
+          <div className="flex flex-col gap-12">
+            <div
+              key={isLoading ? 'loading' : `page-${page}`}
+              className="pagination-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {isLoading
+                ? Array.from({ length: 3 }).map((_, i) => <FilmCardSkeleton key={i} />)
+                : visible.map((f) => (
+                    <Link
+                      key={f.url}
+                      to={paths.filmDetail(extractIdFromUrl(f.url))}
+                      viewTransition
+                      className="group rounded-xl focus-visible:outline-none"
+                    >
+                      <FilmCard film={f} />
+                    </Link>
+                  ))}
+            </div>
 
-          {!isLoading && pageCount > 1 && (
-            <div className="mt-12">
+            {!isLoading && pageCount > 1 && (
               <Pagination
                 currentPage={page}
                 pageCount={pageCount}
                 onPageChange={handlePageChange}
               />
-            </div>
-          )}
-        </>
-      )}
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

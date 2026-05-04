@@ -8,6 +8,7 @@ import FavouriteToggle from '@/components/common/FavouriteToggle'
 import InShellNotFound from '@/components/common/InShellNotFound'
 import ListErrorState from '@/components/common/ListErrorState'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
 import { toRomanNumeral } from '@/lib/romanNumeral'
 import { paths } from '@/routes/paths'
@@ -56,7 +57,7 @@ export default function FilmDetailPage() {
     <div className="flex justify-center px-4 py-12">
       <article className="flex w-full max-w-4xl flex-col gap-10">
         <div className="grid gap-8 sm:grid-cols-[minmax(0,220px)_1fr] sm:gap-10">
-          <FilmPoster src={posterSrc} title={film.title} />
+          <FilmPoster src={posterSrc} title={film.title} className="hidden sm:block" />
           <div className="flex flex-col gap-8">
             <header className="flex flex-col gap-3">
               <Link
@@ -90,6 +91,12 @@ export default function FilmDetailPage() {
                 <span>{film.release_date}</span>
               </div>
             </header>
+
+            <FilmPoster
+              src={posterSrc}
+              title={film.title}
+              className="w-full max-w-[200px] self-center sm:hidden"
+            />
 
             <div className="grid gap-6 sm:grid-cols-2">
               <DetailField label="Directed by" value={film.director} />
@@ -153,11 +160,24 @@ function DetailField({ label, value }: { label: string; value: string }) {
   )
 }
 
-function FilmPoster({ src, title }: { src: string | null; title: string }) {
+function FilmPoster({
+  src,
+  title,
+  className,
+}: {
+  src: string | null
+  title: string
+  className?: string
+}) {
   const [errored, setErrored] = useState(false)
   if (!src || errored) {
     return (
-      <div className="bg-muted text-muted-foreground flex aspect-[2/3] w-full items-center justify-center rounded-md p-4 text-center font-mono text-xs tracking-widest uppercase">
+      <div
+        className={cn(
+          'bg-muted text-muted-foreground flex aspect-[2/3] w-full items-center justify-center rounded-md p-4 text-center font-mono text-xs tracking-widest uppercase',
+          className,
+        )}
+      >
         {title}
       </div>
     )
@@ -169,7 +189,7 @@ function FilmPoster({ src, title }: { src: string | null; title: string }) {
       loading="lazy"
       decoding="async"
       onError={() => setErrored(true)}
-      className="aspect-[2/3] w-full rounded-md object-cover"
+      className={cn('aspect-[2/3] w-full rounded-md object-cover', className)}
     />
   )
 }

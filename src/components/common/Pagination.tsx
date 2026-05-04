@@ -31,10 +31,7 @@ export default function Pagination({ currentPage, pageCount, onPageChange }: Pag
   const isLast = currentPage === pageCount
 
   return (
-    <nav
-      aria-label="Pagination"
-      className="pagination-nav flex items-center justify-center gap-1"
-    >
+    <nav aria-label="Pagination" className="pagination-nav flex items-center justify-center gap-1">
       <button
         type="button"
         onClick={() => onPageChange(currentPage - 1)}

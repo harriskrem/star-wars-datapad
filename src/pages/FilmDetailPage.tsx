@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Film } from 'lucide-react'
 import { useFilm } from '@/queries/useFilms'
 import { useCharactersByUrls } from '@/queries/useCharacters'
 import { ApiError } from '@/api/types'
@@ -169,28 +169,39 @@ function FilmPoster({
   title: string
   className?: string
 }) {
+  const [loaded, setLoaded] = useState(false)
   const [errored, setErrored] = useState(false)
-  if (!src || errored) {
-    return (
-      <div
-        className={cn(
-          'bg-muted text-muted-foreground flex aspect-[2/3] w-full items-center justify-center rounded-md p-4 text-center font-mono text-xs tracking-widest uppercase',
-          className,
-        )}
-      >
-        {title}
-      </div>
-    )
-  }
+  const showImage = src && !errored
+
   return (
-    <img
-      src={src}
-      alt={`${title} poster`}
-      loading="lazy"
-      decoding="async"
-      onError={() => setErrored(true)}
-      className={cn('aspect-[2/3] w-full rounded-md object-cover', className)}
-    />
+    <div
+      className={cn('bg-muted relative aspect-[2/3] w-full overflow-hidden rounded-md', className)}
+    >
+      {showImage ? (
+        <Film
+          aria-hidden="true"
+          className="text-muted-foreground/40 absolute inset-0 m-auto size-12"
+          strokeWidth={1.25}
+        />
+      ) : (
+        <span className="text-muted-foreground absolute inset-0 flex items-center justify-center p-4 text-center font-mono text-xs tracking-widest uppercase">
+          {title}
+        </span>
+      )}
+      {showImage && (
+        <img
+          src={src}
+          alt={`${title} poster`}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setErrored(true)}
+          className={cn(
+            'absolute inset-0 size-full object-cover transition-opacity duration-700 ease-out',
+            loaded ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+      )}
+    </div>
   )
 }
 
@@ -199,7 +210,7 @@ function FilmDetailSkeleton() {
     <div className="flex justify-center px-4 py-12">
       <article className="flex w-full max-w-4xl flex-col gap-10">
         <div className="grid gap-8 sm:grid-cols-[minmax(0,220px)_1fr] sm:gap-10">
-          <Skeleton className="aspect-[2/3] w-full rounded-md" />
+          <div className="bg-muted hidden aspect-[2/3] w-full rounded-md sm:block" />
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-3">
               <Skeleton className="h-3 w-20" />

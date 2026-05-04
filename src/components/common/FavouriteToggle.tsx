@@ -49,7 +49,7 @@ export default function FavouriteToggle({
       }
       aria-pressed={isFavourite}
       className={cn(
-        'inline-flex shrink-0 items-center justify-center rounded-full transition-colors',
+        'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors',
         'hover:bg-muted',
         'focus-visible:ring-brand focus-visible:ring-2 focus-visible:outline-none',
         dimension,

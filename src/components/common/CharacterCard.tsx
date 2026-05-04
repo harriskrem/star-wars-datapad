@@ -14,7 +14,7 @@ export default function CharacterCard({ character }: CharacterCardProps) {
 
   return (
     <Card className="relative h-full transition-[box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]">
-      <div className="absolute top-1 right-1">
+      <div className="absolute top-2 right-2">
         <FavouriteToggle
           type="character"
           id={id}

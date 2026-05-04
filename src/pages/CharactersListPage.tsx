@@ -69,10 +69,7 @@ export default function CharactersListPage() {
   return (
     <div className="flex justify-center px-4 py-12">
       <div className="flex w-full max-w-6xl flex-col gap-8">
-        <header className="flex flex-col gap-2">
-          <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-            Section
-          </p>
+        <header>
           <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Characters</h1>
         </header>
 

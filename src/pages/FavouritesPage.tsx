@@ -18,10 +18,7 @@ export default function FavouritesPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
-        <header className="mb-8 flex flex-col gap-2">
-          <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-            Section
-          </p>
+        <header className="mb-8">
           <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Favourites</h1>
         </header>
         <EmptyState
@@ -43,8 +40,7 @@ export default function FavouritesPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <header className="mb-8 flex flex-col gap-2">
-        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Section</p>
+      <header className="mb-8">
         <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Favourites</h1>
       </header>
 
@@ -146,7 +142,7 @@ function FavouriteEntryShell({
         isMissing && 'opacity-70',
       )}
     >
-      <div className="absolute top-1 right-1">
+      <div className="absolute top-2 right-2">
         <FavouriteToggle type={type} id={id} itemName={name} snapshot={snapshot} />
       </div>
       <CardHeader>

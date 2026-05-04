@@ -33,8 +33,10 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-12 sm:py-16">
-      <header className="flex flex-col gap-6">
-        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Datapad</p>
+      <header className="flex max-w-2xl flex-col gap-6">
+        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+          Overview
+        </p>
         <h1 className="font-display text-5xl leading-[1.05] tracking-wide text-balance uppercase sm:text-6xl lg:text-7xl">
           A handheld for the Star&nbsp;Wars galaxy.
         </h1>
@@ -54,7 +56,7 @@ export default function HomePage() {
           >
             <Card className="h-full transition-[box-shadow,color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]">
               <CardHeader>
-                <CardTitle className="flex items-baseline gap-2 text-2xl">
+                <CardTitle className="flex items-center gap-2 text-2xl">
                   <span className="font-display tracking-wide uppercase">{s.title}</span>
                   {!!s.count && (
                     <span className="text-muted-foreground font-mono text-base transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-brand group-focus-visible:text-brand">

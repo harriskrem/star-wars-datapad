@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import MessagePage from '@/components/common/MessagePage'
 
 type ErrorFallbackProps = {
   error: unknown
@@ -7,16 +8,12 @@ type ErrorFallbackProps = {
 
 export default function ErrorFallback({ resetErrorBoundary }: ErrorFallbackProps) {
   return (
-    <div
+    <MessagePage
       role="alert"
-      className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center gap-6 px-4 py-12 text-center"
-    >
-      <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">Error</p>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Something went wrong.</h1>
-      <p className="text-muted-foreground">
-        An unexpected error interrupted this page. You can try again, or return to the dashboard.
-      </p>
-      <Button onClick={resetErrorBoundary}>Try again</Button>
-    </div>
+      eyebrow="Error"
+      title="Something went wrong."
+      description="An unexpected error interrupted this page. You can try again, or return to the dashboard."
+      action={<Button onClick={resetErrorBoundary}>Try again</Button>}
+    />
   )
 }

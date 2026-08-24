@@ -1,15 +1,16 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useCharacter } from '@/queries/useCharacters'
 import { useFilm } from '@/queries/useFilms'
-import { ApiError } from '@/api/types'
+import { isNotFound } from '@/api/types'
 import { useFavouritesStore, type Favourite } from '@/stores/favouritesStore'
+import ButtonLink from '@/components/common/ButtonLink'
 import EmptyState from '@/components/common/EmptyState'
-import FavouriteToggle from '@/components/common/FavouriteToggle'
-import { buttonVariants } from '@/components/ui/button'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import MetaBadge from '@/components/common/MetaBadge'
+import ResourceCard from '@/components/common/ResourceCard'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
 import { toRomanNumeral } from '@/lib/romanNumeral'
+import { resources } from '@/config/resources'
 import { paths } from '@/routes/paths'
 
 export default function FavouritesPage() {
@@ -18,17 +19,11 @@ export default function FavouritesPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
-        <header className="mb-8">
-          <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Favourites</h1>
-        </header>
+        <FavouritesHeading />
         <EmptyState
           title="No favourites yet"
           description="Star characters and films you want to revisit."
-          cta={
-            <Link to={paths.characters} viewTransition className={cn(buttonVariants(), 'h-9 px-4')}>
-              Browse characters
-            </Link>
-          }
+          cta={<ButtonLink to={paths.characters}>Browse characters</ButtonLink>}
         />
       </div>
     )
@@ -40,9 +35,7 @@ export default function FavouritesPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <header className="mb-8">
-        <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Favourites</h1>
-      </header>
+      <FavouritesHeading />
 
       {characters.length > 0 && (
         <FavouritesSection title={`Characters · ${characters.length}`}>
@@ -63,120 +56,103 @@ export default function FavouritesPage() {
   )
 }
 
-function FavouritesSection({ title, children }: { title: string; children: React.ReactNode }) {
+function FavouritesHeading() {
+  return (
+    <header className="mb-8">
+      <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Favourites</h1>
+    </header>
+  )
+}
+
+function FavouritesSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-10 first:mt-0">
       <h2 className="mb-4 text-sm font-semibold tracking-widest uppercase">{title}</h2>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{children}</ul>
+      <ul className="card-grid">{children}</ul>
     </section>
   )
 }
 
+// The two entries below exist only because each needs its own query hook —
+// everything they render is shared by FavouriteEntry.
+
 function CharacterFavouriteEntry({ fav }: { fav: Favourite }) {
   const q = useCharacter(fav.id)
-  const isMissing = q.isError && q.error instanceof ApiError && q.error.status === 404
-  const name = q.data?.name ?? fav.snapshot.name
-  const birthYear = q.data?.birth_year ?? fav.snapshot.birth_year ?? '—'
 
   return (
-    <FavouriteEntryShell
-      type="character"
-      id={fav.id}
-      name={name}
-      isMissing={isMissing}
-      detailHref={paths.characterDetail(fav.id)}
-      snapshot={fav.snapshot}
+    <FavouriteEntry
+      fav={fav}
+      isMissing={isNotFound(q.error)}
+      title={q.data?.name ?? fav.snapshot.name}
     >
-      <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-        {birthYear}
-      </span>
-    </FavouriteEntryShell>
+      <MetaBadge>{q.data?.birth_year ?? fav.snapshot.birth_year ?? '—'}</MetaBadge>
+    </FavouriteEntry>
   )
 }
 
 function FilmFavouriteEntry({ fav }: { fav: Favourite }) {
   const q = useFilm(fav.id)
-  const isMissing = q.isError && q.error instanceof ApiError && q.error.status === 404
-  const name = q.data?.title ?? fav.snapshot.name
   const episodeId = q.data?.episode_id ?? fav.snapshot.episode_id
 
   return (
-    <FavouriteEntryShell
-      type="film"
-      id={fav.id}
-      name={name}
-      isMissing={isMissing}
-      detailHref={paths.filmDetail(fav.id)}
-      snapshot={fav.snapshot}
+    <FavouriteEntry
+      fav={fav}
+      isMissing={isNotFound(q.error)}
+      title={q.data?.title ?? fav.snapshot.name}
     >
-      {typeof episodeId === 'number' && (
-        <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-          Episode {toRomanNumeral(episodeId)}
-        </span>
-      )}
-    </FavouriteEntryShell>
+      {typeof episodeId === 'number' && <MetaBadge>Episode {toRomanNumeral(episodeId)}</MetaBadge>}
+    </FavouriteEntry>
   )
 }
 
-function FavouriteEntryShell({
-  type,
-  id,
-  name,
+function FavouriteEntry({
+  fav,
+  title,
   isMissing,
-  detailHref,
-  snapshot,
   children,
 }: {
-  type: 'character' | 'film'
-  id: string
-  name: string
+  fav: Favourite
+  title: string
   isMissing: boolean
-  detailHref: string
-  snapshot: Favourite['snapshot']
-  children?: React.ReactNode
+  children?: ReactNode
 }) {
-  const cardInner = (
-    <Card
-      className={cn(
-        'relative h-full transition-[box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]',
-        isMissing && 'opacity-70',
-      )}
+  const card = (
+    <ResourceCard
+      type={fav.type}
+      id={fav.id}
+      title={title}
+      snapshot={fav.snapshot}
+      titleSize="sm"
+      dimmed={isMissing}
     >
-      <div className="absolute top-2 right-2">
-        <FavouriteToggle type={type} id={id} itemName={name} snapshot={snapshot} />
-      </div>
-      <CardHeader>
-        <CardTitle className="font-display pr-12 text-xl tracking-wide uppercase">{name}</CardTitle>
-        <CardDescription className="flex flex-wrap items-center gap-x-2 gap-y-1 pt-1">
-          {children}
-          {isMissing && (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <span className="border-border text-muted-foreground inline-flex cursor-help items-center rounded-md border px-2 py-0.5 text-xs">
-                    No longer available
-                  </span>
-                }
-              />
-              <TooltipContent>This item is no longer in the Star Wars database.</TooltipContent>
-            </Tooltip>
-          )}
-        </CardDescription>
-      </CardHeader>
-    </Card>
+      {children}
+      {isMissing && (
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <span className="border-border text-muted-foreground inline-flex cursor-help items-center rounded-md border px-2 py-0.5 text-xs">
+                No longer available
+              </span>
+            }
+          />
+          <TooltipContent>This item is no longer in the Star Wars database.</TooltipContent>
+        </Tooltip>
+      )}
+    </ResourceCard>
   )
 
+  // A missing resource has no detail page worth linking to.
   return (
     <li>
       {isMissing ? (
-        cardInner
+        card
       ) : (
         <Link
-          to={detailHref}
+          to={resources[fav.type].detailPath(fav.id)}
           viewTransition
           className="group block rounded-xl focus-visible:outline-none"
         >
-          {cardInner}
+          {card}
         </Link>
       )}
     </li>

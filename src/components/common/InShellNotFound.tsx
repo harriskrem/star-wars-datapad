@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import ButtonLink from '@/components/common/ButtonLink'
 
 type InShellNotFoundProps = {
   resourceName: string
@@ -8,6 +6,11 @@ type InShellNotFoundProps = {
   backLabel: string
 }
 
+/**
+ * The 404 shown inside the app shell when a detail route's id doesn't exist.
+ * Uses the display face to sit alongside the detail pages, unlike the
+ * route-level NotFoundPage.
+ */
 export default function InShellNotFound({
   resourceName,
   backHref,
@@ -15,16 +18,16 @@ export default function InShellNotFound({
 }: InShellNotFoundProps) {
   return (
     <div className="mx-auto max-w-xl px-4 py-16 text-center">
-      <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">404</p>
+      <p className="kicker">404</p>
       <h1 className="font-display mt-2 text-4xl tracking-wide uppercase sm:text-5xl">
         {resourceName} not found
       </h1>
       <p className="text-muted-foreground mt-3">
         We couldn&rsquo;t find a {resourceName.toLowerCase()} with that id.
       </p>
-      <Link to={backHref} viewTransition className={cn(buttonVariants(), 'mt-6 h-9 px-4')}>
+      <ButtonLink to={backHref} className="mt-6">
         {backLabel}
-      </Link>
+      </ButtonLink>
     </div>
   )
 }

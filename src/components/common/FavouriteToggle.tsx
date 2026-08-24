@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { Heart } from 'lucide-react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { toast } from 'sonner'
 import {
   selectIsFavourite,
@@ -9,13 +10,30 @@ import {
 } from '@/stores/favouritesStore'
 import { cn } from '@/lib/utils'
 
-type FavouriteToggleProps = {
+const toggleVariants = cva(
+  'focus-ring inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors hover:bg-muted',
+  {
+    variants: {
+      size: {
+        default: 'h-11 w-11',
+        lg: 'h-12 w-12',
+      },
+    },
+    defaultVariants: { size: 'default' },
+  },
+)
+
+const iconSizes = {
+  default: 'size-5',
+  lg: 'size-6',
+} as const
+
+type FavouriteToggleProps = VariantProps<typeof toggleVariants> & {
   type: FavouriteType
   id: string
   /** Display name used in the aria-label (e.g. "Luke Skywalker"). */
   itemName: string
   snapshot: FavouriteSnapshot
-  size?: 'default' | 'lg'
 }
 
 export default function FavouriteToggle({
@@ -37,9 +55,6 @@ export default function FavouriteToggle({
     toast.success(result === 'added' ? 'Added to favourites' : 'Removed from favourites')
   }
 
-  const dimension = size === 'lg' ? 'h-12 w-12' : 'h-11 w-11'
-  const iconSize = size === 'lg' ? 'size-6' : 'size-5'
-
   return (
     <button
       type="button"
@@ -48,15 +63,13 @@ export default function FavouriteToggle({
         isFavourite ? `Remove ${itemName} from favourites` : `Add ${itemName} to favourites`
       }
       aria-pressed={isFavourite}
-      className={cn(
-        'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors',
-        'hover:bg-muted',
-        'focus-visible:ring-brand focus-visible:ring-2 focus-visible:outline-none',
-        dimension,
-      )}
+      className={toggleVariants({ size })}
     >
       <Heart
-        className={cn(iconSize, isFavourite ? 'fill-brand text-brand' : 'text-muted-foreground')}
+        className={cn(
+          iconSizes[size ?? 'default'],
+          isFavourite ? 'fill-brand text-brand' : 'text-muted-foreground',
+        )}
         aria-hidden="true"
       />
     </button>

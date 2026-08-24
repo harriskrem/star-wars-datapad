@@ -1,6 +1,6 @@
 import type { Film } from '@/api/types'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import FavouriteToggle from '@/components/common/FavouriteToggle'
+import MetaBadge from '@/components/common/MetaBadge'
+import ResourceCard from '@/components/common/ResourceCard'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
 import { toRomanNumeral } from '@/lib/romanNumeral'
 
@@ -9,35 +9,21 @@ type FilmCardProps = {
 }
 
 export default function FilmCard({ film }: FilmCardProps) {
-  const id = extractIdFromUrl(film.url)
-
   return (
-    <Card className="relative h-full transition-[box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:ring-brand group-hover:shadow-[0_0_24px_-4px_#ffe81f59] group-focus-visible:ring-brand group-focus-visible:shadow-[0_0_24px_-4px_#ffe81f59]">
-      <div className="absolute top-2 right-2">
-        <FavouriteToggle
-          type="film"
-          id={id}
-          itemName={film.title}
-          snapshot={{
-            name: film.title,
-            episode_id: film.episode_id,
-            release_date: film.release_date,
-          }}
-        />
-      </div>
-      <CardHeader>
-        <CardTitle className="font-display pr-12 text-2xl tracking-wide uppercase">
-          {film.title}
-        </CardTitle>
-        <CardDescription className="flex flex-wrap items-center gap-x-2 gap-y-1 pt-1">
-          <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-0.5 font-mono text-xs">
-            Episode {toRomanNumeral(film.episode_id)}
-          </span>
-          <span>{film.release_date}</span>
-          <span aria-hidden="true">·</span>
-          <span>{film.director}</span>
-        </CardDescription>
-      </CardHeader>
-    </Card>
+    <ResourceCard
+      type="film"
+      id={extractIdFromUrl(film.url)}
+      title={film.title}
+      snapshot={{
+        name: film.title,
+        episode_id: film.episode_id,
+        release_date: film.release_date,
+      }}
+    >
+      <MetaBadge>Episode {toRomanNumeral(film.episode_id)}</MetaBadge>
+      <span>{film.release_date}</span>
+      <span aria-hidden="true">·</span>
+      <span>{film.director}</span>
+    </ResourceCard>
   )
 }

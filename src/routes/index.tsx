@@ -13,9 +13,10 @@ export const appRoutes = createRoutesFromElements(
   <Route element={<RootLayout />}>
     <Route path={paths.home} element={<HomePage />} />
     <Route path={paths.characters} element={<CharactersListPage />} />
-    <Route path="/characters/:id" element={<CharacterDetailPage />} />
+    {/* The builders generate their own :id patterns, so link and route can't drift. */}
+    <Route path={paths.characterDetail(':id')} element={<CharacterDetailPage />} />
     <Route path={paths.films} element={<FilmsListPage />} />
-    <Route path="/films/:id" element={<FilmDetailPage />} />
+    <Route path={paths.filmDetail(':id')} element={<FilmDetailPage />} />
     <Route path={paths.favourites} element={<FavouritesPage />} />
     <Route path="*" element={<NotFoundPage />} />
   </Route>,

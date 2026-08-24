@@ -1,26 +1,29 @@
+import type { ReactNode } from 'react'
+
+function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="focus-ring hover:text-foreground rounded transition-colors"
+    >
+      {children}
+    </a>
+  )
+}
+
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer className="border-border/60 bg-background h-12 shrink-0 border-t">
-      <div className="text-muted-foreground mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-4 font-mono text-xs tracking-widest uppercase">
-        <a
-          href="https://swapi.info"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-foreground focus-visible:ring-brand rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
-        >
-          Data from SWAPI
-        </a>
+      <div className="shell-bar kicker">
+        <ExternalLink href="https://swapi.info">Data from SWAPI</ExternalLink>
         <small className="text-[length:inherit]">
           © {year}{' '}
-          <a
-            href="https://github.com/harriskrem/star-wars-datapad"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground focus-visible:ring-brand rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
-          >
+          <ExternalLink href="https://github.com/harriskrem/star-wars-datapad">
             Harris Kremmidas
-          </a>
+          </ExternalLink>
         </small>
       </div>
     </footer>

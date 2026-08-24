@@ -1,7 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-
-const ONE_HOUR_MS = 1000 * 60 * 60
-const SEVEN_DAYS_MS = 1000 * 60 * 60 * 24 * 7
+import { ONE_HOUR_MS, SEVEN_DAYS_MS } from '@/lib/time'
 
 type CreateQueryClientOptions = {
   retry?: boolean | number

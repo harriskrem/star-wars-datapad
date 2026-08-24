@@ -1,10 +1,8 @@
 import type { ReactElement } from 'react'
 import { render, type RenderResult } from '@testing-library/react'
 import { createMemoryRouter, MemoryRouter, RouterProvider } from 'react-router-dom'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { appRoutes } from '@/routes'
-import { Toaster } from '@/components/ui/sonner'
-import { TooltipProvider } from '@/components/ui/tooltip'
+import AppProviders from '@/components/AppProviders'
 import { createQueryClient } from '@/lib/queryClient'
 
 type RenderWithAppOptions = {
@@ -12,28 +10,19 @@ type RenderWithAppOptions = {
 }
 
 export function renderWithApp(ui: ReactElement, options: RenderWithAppOptions = {}): RenderResult {
-  const queryClient = createQueryClient({ retry: false })
-
   return render(
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <MemoryRouter initialEntries={[options.route ?? '/']}>{ui}</MemoryRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>,
+    <AppProviders queryClient={createQueryClient({ retry: false })}>
+      <MemoryRouter initialEntries={[options.route ?? '/']}>{ui}</MemoryRouter>
+    </AppProviders>,
   )
 }
 
 export function renderAppAt(route: string): RenderResult {
-  const queryClient = createQueryClient({ retry: false })
   const router = createMemoryRouter(appRoutes, { initialEntries: [route] })
 
   return render(
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <RouterProvider router={router} />
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>,
+    <AppProviders queryClient={createQueryClient({ retry: false })}>
+      <RouterProvider router={router} />
+    </AppProviders>,
   )
 }

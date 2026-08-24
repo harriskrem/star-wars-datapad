@@ -45,3 +45,8 @@ export class ApiError extends Error {
     this.url = url
   }
 }
+
+/** True when the error is a 404 from our API — i.e. the resource is gone. */
+export function isNotFound(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 404
+}

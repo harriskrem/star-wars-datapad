@@ -1,6 +1,6 @@
 import { ApiError } from '@/api/types'
 
-const BASE_URL = 'https://swapi.info/api'
+export const BASE_URL = 'https://swapi.info/api'
 
 export async function apiGet<T>(path: string): Promise<T> {
   const url = `${BASE_URL}${path}`

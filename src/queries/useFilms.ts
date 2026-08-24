@@ -1,8 +1,11 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getFilm, getFilms } from '@/api/films'
+import type { Film } from '@/api/types'
 import { extractIdFromUrl } from '@/lib/swapiUrl'
+import { ONE_DAY_MS } from '@/lib/time'
 
-const ONE_DAY_MS = 1000 * 60 * 60 * 24
+// Films change far less often than characters, hence the longer window.
+const STALE_TIME = ONE_DAY_MS
 
 export const filmsQueryKey = ['films'] as const
 export const filmQueryKey = (id: string) => ['film', id] as const
@@ -11,15 +14,21 @@ export function useFilms() {
   return useQuery({
     queryKey: filmsQueryKey,
     queryFn: getFilms,
-    staleTime: ONE_DAY_MS,
+    staleTime: STALE_TIME,
   })
 }
 
 export function useFilm(id: string) {
+  const queryClient = useQueryClient()
+
   return useQuery({
     queryKey: filmQueryKey(id),
     queryFn: () => getFilm(id),
-    staleTime: ONE_DAY_MS,
+    staleTime: STALE_TIME,
+    initialData: () => {
+      const cached = queryClient.getQueryData<Film[]>(filmsQueryKey)
+      return cached?.find((f) => extractIdFromUrl(f.url) === id)
+    },
   })
 }
 
@@ -30,7 +39,7 @@ export function useFilmsByUrls(urls: string[]) {
       return {
         queryKey: filmQueryKey(id),
         queryFn: () => getFilm(id),
-        staleTime: ONE_DAY_MS,
+        staleTime: STALE_TIME,
       }
     }),
   })

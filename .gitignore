@@ -16,6 +16,9 @@ coverage
 # Yarn 4 transient state
 .yarn/install-state.gz
 
+# Vercel CLI local state
+.vercel
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

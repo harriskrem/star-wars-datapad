@@ -13,19 +13,8 @@
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
   --font-display: 'Bebas Neue', system-ui, sans-serif;
   --color-brand: #ffe81f;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-brand-glow: 0 0 24px -4px #ffe81f59;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -72,20 +61,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -107,19 +83,29 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Shared class strings. Each of these was repeated verbatim across the app;
+   keep them here so a visual tweak lands in one place. */
+
+@utility focus-ring {
+  @apply focus-visible:ring-brand focus-visible:ring-2 focus-visible:outline-none;
+}
+
+@utility card-glow {
+  @apply group-hover:ring-brand group-focus-visible:ring-brand transition-[box-shadow] duration-200 ease-out-expo group-hover:shadow-brand-glow group-focus-visible:shadow-brand-glow;
+}
+
+@utility card-grid {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+@utility kicker {
+  @apply text-muted-foreground font-mono text-xs tracking-widest uppercase;
+}
+
+@utility shell-bar {
+  @apply mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-4;
 }
 
 @layer base {
@@ -140,10 +126,10 @@
 }
 
 ::view-transition-old(root) {
-  animation: 450ms cubic-bezier(0.16, 1, 0.3, 1) both vt-slide-out;
+  animation: 450ms var(--ease-out-expo) both vt-slide-out;
 }
 ::view-transition-new(root) {
-  animation: 450ms cubic-bezier(0.16, 1, 0.3, 1) both vt-slide-in;
+  animation: 450ms var(--ease-out-expo) both vt-slide-in;
 }
 
 @keyframes vt-slide-in {
@@ -160,7 +146,7 @@
 }
 
 .pagination-grid {
-  animation: pagination-grid-in 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: pagination-grid-in 180ms var(--ease-out-expo) both;
 }
 
 @keyframes pagination-grid-in {

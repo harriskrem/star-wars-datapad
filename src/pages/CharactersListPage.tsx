@@ -1,124 +1,17 @@
-import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
 import { useCharacters } from '@/queries/useCharacters'
-import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import CharacterCard from '@/components/common/CharacterCard'
-import CharacterCardSkeleton from '@/components/common/CharacterCardSkeleton'
-import EmptyState from '@/components/common/EmptyState'
-import ListErrorState from '@/components/common/ListErrorState'
-import Pagination from '@/components/common/Pagination'
-import SearchInput from '@/components/common/SearchInput'
-import { extractIdFromUrl } from '@/lib/swapiUrl'
-import { paths } from '@/routes/paths'
-
-const PAGE_SIZE = 10
+import ResourceListPage from '@/components/common/ResourceListPage'
+import { resources } from '@/config/resources'
 
 export default function CharactersListPage() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const { data, isLoading, isError, refetch } = useCharacters()
-
-  const urlSearch = searchParams.get('search') ?? ''
-  const [inputValue, setInputValue] = useState(urlSearch)
-  const [lastSyncedUrlSearch, setLastSyncedUrlSearch] = useState(urlSearch)
-  const debouncedSearch = useDebouncedValue(inputValue, 250)
-  const normalizedSearch = debouncedSearch.trim().toLowerCase()
-
-  // Sync URL → input when URL changes externally (back/forward, fresh load).
-  if (urlSearch !== lastSyncedUrlSearch) {
-    setLastSyncedUrlSearch(urlSearch)
-    setInputValue(urlSearch)
-  }
-
-  // Debounced input → URL (resets page on search change).
-  useEffect(() => {
-    if (debouncedSearch === urlSearch) return
-    const params = new URLSearchParams(searchParams)
-    if (debouncedSearch) {
-      params.set('search', debouncedSearch)
-    } else {
-      params.delete('search')
-    }
-    params.delete('page')
-    setSearchParams(params, { replace: true })
-  }, [debouncedSearch, urlSearch, searchParams, setSearchParams])
-
-  const filtered = data?.filter((c) => c.name.toLowerCase().includes(normalizedSearch)) ?? []
-  const totalCount = filtered.length
-  const pageCount = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
-  const requestedPage = Number(searchParams.get('page') ?? '1')
-  const page = Number.isFinite(requestedPage)
-    ? Math.min(Math.max(1, Math.trunc(requestedPage)), pageCount)
-    : 1
-
-  const startIndex = (page - 1) * PAGE_SIZE
-  const visible = filtered.slice(startIndex, startIndex + PAGE_SIZE)
-
-  function handlePageChange(next: number) {
-    const params = new URLSearchParams(searchParams)
-    if (next === 1) {
-      params.delete('page')
-    } else {
-      params.set('page', String(next))
-    }
-    setSearchParams(params)
-    document.getElementById('main')?.scrollTo?.({ top: 0, behavior: 'instant' })
-  }
-
-  const showEmptyState = !isLoading && !isError && totalCount === 0 && normalizedSearch.length > 0
+  const query = useCharacters()
 
   return (
-    <div className="flex justify-center px-4 py-12">
-      <div className="flex w-full max-w-6xl flex-col gap-8">
-        <header>
-          <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Characters</h1>
-        </header>
-
-        <div className="flex max-w-md flex-col">
-          <SearchInput
-            label="Search characters by name"
-            value={inputValue}
-            onChange={setInputValue}
-            placeholder="Search by name…"
-          />
-        </div>
-
-        {isError ? (
-          <ListErrorState onRetry={() => refetch()} />
-        ) : showEmptyState ? (
-          <EmptyState
-            title={`Nothing matched ‘${debouncedSearch.trim()}’`}
-            description="Try a different name."
-          />
-        ) : (
-          <div className="flex flex-col gap-12">
-            <div
-              key={isLoading ? 'loading' : `page-${page}`}
-              className="pagination-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {isLoading
-                ? Array.from({ length: PAGE_SIZE }).map((_, i) => <CharacterCardSkeleton key={i} />)
-                : visible.map((c) => (
-                    <Link
-                      key={c.url}
-                      to={paths.characterDetail(extractIdFromUrl(c.url))}
-                      viewTransition
-                      className="group rounded-xl focus-visible:outline-none"
-                    >
-                      <CharacterCard character={c} />
-                    </Link>
-                  ))}
-            </div>
-
-            {!isLoading && pageCount > 1 && (
-              <Pagination
-                currentPage={page}
-                pageCount={pageCount}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+    <ResourceListPage
+      resource={resources.character}
+      query={query}
+      matches={(c, q) => c.name.toLowerCase().includes(q)}
+      renderCard={(c) => <CharacterCard character={c} />}
+    />
   )
 }
